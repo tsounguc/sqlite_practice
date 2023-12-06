@@ -11,12 +11,16 @@ from flask_sqlalchemy import SQLAlchemy
 # cursor.execute("INSERT INTO books VALUES(1, 'Harry Potter', 'J.k. Rowling', '9.3')")
 # db.commit()
 
+# create the extension
 db = SQLAlchemy()
 
+# create the app
 app = Flask(__name__)
 
+# configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///new-books-collection.db"
 
+# initialize the app with the extension
 db.init_app(app)
 
 
