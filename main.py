@@ -1,7 +1,8 @@
 import sqlite3
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy import INTEGER, VARCHAR, FLOAT
+from sqlalchemy.orm import Mapped, mapped_column
 
 # db = sqlite3.connect("books-collection.db")
 # cursor = db.cursor()
@@ -24,4 +25,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///new-books-collection.db"
 db.init_app(app)
 
 
+class Books(db.Model):
+    id: Mapped[int] = mapped_column(INTEGER, primary_key=True)
+    title: Mapped[str] = mapped_column(VARCHAR, unique=True, nullable=False)
+    author: Mapped[str] = mapped_column(VARCHAR, nullable=False)
+    review: Mapped[float] = mapped_column(FLOAT, nullable=False)
 
+
+with app.app_context():
+    db.create_all()
+    book = Books(title="Harry Potter", author="J. K. Rowling", review=9.3)
+    db.session.add(book)
+    db.session.commit()
